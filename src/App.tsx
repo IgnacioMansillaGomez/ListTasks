@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { InputField } from "./components/input-field/input-field.component";
+import { TaskList } from "./components/task-list/task-list";
+import { Task } from "./types/task";
 
-function App() {
+export const App: React.FC = () => {
+  const [task, setTask] = useState<string | number>("");
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const handleAdd = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (task) {
+      setTasks([...tasks, { id: Date.now(), task, done: false }]);
+      setTask("");
+    }
+  };
+
+  console.log(tasks);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1 className="heading">List of Tasks</h1>
+      <InputField task={task} setTask={setTask} handleAdd={handleAdd} />
+      <TaskList tasks={tasks} />
     </div>
   );
-}
-
-export default App;
+};
