@@ -22,7 +22,7 @@ export const App: React.FC = () => {
     <div className="app">
       <h1 className="heading">List of Tasks</h1>
       <InputField task={task} setTask={setTask} handleAdd={handleAdd} />
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} setTasks={setTasks} />
     </div>
   );
 };
