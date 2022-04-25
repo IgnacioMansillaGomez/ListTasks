@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Task } from "../../types/task";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { MdDoneAll } from "react-icons/md";
@@ -13,6 +13,9 @@ interface Props {
 }
 
 export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
+  const [edit, setEdit] = useState<boolean>(false);
+  const [editTask, setEditTask] = useState<string>(task.task.toString());
+
   const handleDone = (id: number) => {
     setTasks(
       tasks.map((task) =>
@@ -21,15 +24,38 @@ export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
     );
   };
 
+  const handleDelete = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const handleEdit = (e: React.FormEvent, id: number) => {
+    e.preventDefault();
+    setTasks(
+      tasks.map((task) => (task.id === id ? { ...task, task: editTask } : task))
+    );
+    setEdit(false);
+  };
+
   return (
-    <form className="task__item">
-      <span className="task__item-text">{task.task}</span>
+    <form className="task__item" onSubmit={(e) => handleEdit(e, task.id)}>
+      {edit ? (
+        <input
+          value={editTask}
+          onChange={(e) => setEditTask(e.target.value)}
+          className="task__item-text "
+        />
+      ) : task.done ? (
+        <s className="task__item-text-done">{task.task}</s>
+      ) : (
+        <span className="task__item-text">{task.task}</span>
+      )}
+
       <div>
         <span className="icon">
-          <FaPencilAlt />
+          <FaPencilAlt onClick={() => !edit && setEdit(!edit)} />
         </span>
         <span className="icon">
-          <FaTrashAlt />
+          <FaTrashAlt onClick={() => handleDelete(task.id)} />
         </span>
         <span className="icon">
           <MdDoneAll onClick={() => handleDone(task.id)} />
