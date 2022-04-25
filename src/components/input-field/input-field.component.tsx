@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./input-field.css";
+import "./input-field.scss";
 
 interface Props {
   task: string | number;

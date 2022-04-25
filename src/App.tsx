@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { InputField } from "./components/input-field/input-field.component";
 import { TaskList } from "./components/task-list/task-list";
 import { Task } from "./types/task";
