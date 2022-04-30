@@ -1,7 +1,7 @@
 @import "../../common/colors.scss";
 
 .container {
-  width: 97%;
+  width: 95%;
   display: flex;
   margin-top: 10px;
   justify-content: space-between;
@@ -11,6 +11,15 @@
     display: flex;
     flex-direction: column;
     width: 47.5%;
-    padding: 15px;
+    padding: 20px;
+    background-color: rgb(218, 184, 106);
+    .tasks__heading {
+      font-size: 30px;
+      color: #fff;
+      font-weight: 500;
+    }
+  }
+  .completed {
+    background-color: rgb(235, 103, 80);
   }
 }

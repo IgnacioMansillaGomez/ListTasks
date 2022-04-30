@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Task } from "../../types/task";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { MdDoneAll } from "react-icons/md";
@@ -15,6 +15,7 @@ interface Props {
 export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTask, setEditTask] = useState<string>(task.task.toString());
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDone = (id: number) => {
     setTasks(
@@ -36,11 +37,16 @@ export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
     setEdit(false);
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [edit]);
+
   return (
     <form className="task__item" onSubmit={(e) => handleEdit(e, task.id)}>
       {edit ? (
         <input
           value={editTask}
+          ref={inputRef}
           onChange={(e) => setEditTask(e.target.value)}
           className="task__item-text "
         />
