@@ -28,14 +28,16 @@ export const TaskList: React.FC<PropsTaskList> = ({
             {...provided.droppableProps}
           >
             <span className="tasks__heading">Waiting to be completed</span>
-            {tasks.map((task) => (
+            {tasks.map((task, index) => (
               <TaskItem
+                index={index}
                 task={task}
-                key={task.id}
                 tasks={tasks}
                 setTasks={setTasks}
+                key={task.id}
               />
             ))}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>
@@ -47,14 +49,16 @@ export const TaskList: React.FC<PropsTaskList> = ({
             {...provided.droppableProps}
           >
             <span className="tasks__heading">C0mpleted Tasks</span>
-            {tasks.map((task) => (
+            {completedTask.map((task, index) => (
               <TaskItem
+                index={index}
                 task={task}
-                key={task.id}
                 tasks={completedTask}
                 setTasks={setCompletedTask}
+                key={task.id}
               />
             ))}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>

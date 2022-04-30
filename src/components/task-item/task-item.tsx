@@ -4,15 +4,17 @@ import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { MdDoneAll } from "react-icons/md";
 
 import "./task-item.scss";
+import { Draggable } from "react-beautiful-dnd";
 
 interface Props {
   task: Task;
-  key: number;
+
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  index: number;
 }
 
-export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
+export const TaskItem: React.FC<Props> = ({ task, tasks, setTasks, index }) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTask, setEditTask] = useState<string>(task.task.toString());
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,31 +44,41 @@ export const TaskItem: React.FC<Props> = ({ task, key, tasks, setTasks }) => {
   }, [edit]);
 
   return (
-    <form className="task__item" onSubmit={(e) => handleEdit(e, task.id)}>
-      {edit ? (
-        <input
-          value={editTask}
-          ref={inputRef}
-          onChange={(e) => setEditTask(e.target.value)}
-          className="task__item-text "
-        />
-      ) : task.done ? (
-        <s className="task__item-text-done">{task.task}</s>
-      ) : (
-        <span className="task__item-text">{task.task}</span>
-      )}
+    <Draggable draggableId={task.id.toString()} index={index}>
+      {(provided) => (
+        <form
+          className="task__item"
+          onSubmit={(e) => handleEdit(e, task.id)}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          {edit ? (
+            <input
+              value={editTask}
+              ref={inputRef}
+              onChange={(e) => setEditTask(e.target.value)}
+              className="task__item-text "
+            />
+          ) : task.done ? (
+            <s className="task__item-text-done">{task.task}</s>
+          ) : (
+            <span className="task__item-text">{task.task}</span>
+          )}
 
-      <div>
-        <span className="icon">
-          <FaPencilAlt onClick={() => !edit && setEdit(!edit)} />
-        </span>
-        <span className="icon">
-          <FaTrashAlt onClick={() => handleDelete(task.id)} />
-        </span>
-        <span className="icon">
-          <MdDoneAll onClick={() => handleDone(task.id)} />
-        </span>
-      </div>
-    </form>
+          <div>
+            <span className="icon">
+              <FaPencilAlt onClick={() => !edit && setEdit(!edit)} />
+            </span>
+            <span className="icon">
+              <FaTrashAlt onClick={() => handleDelete(task.id)} />
+            </span>
+            <span className="icon">
+              <MdDoneAll onClick={() => handleDone(task.id)} />
+            </span>
+          </div>
+        </form>
+      )}
+    </Draggable>
   );
 };
